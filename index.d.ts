@@ -57,56 +57,56 @@ export declare class TNSFancyAlert {
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showError(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showNotice(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showWarning(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showInfo(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showEdit(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showWaiting(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showQuestion(
     title: string,
     subTitle?: string,
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showCustomButtonTimer(
     buttonIndex: number,
     reverse?: boolean,
@@ -189,7 +189,7 @@ export declare class TNSFancyAlert {
     closeBtnTitle?: string,
     duration?: number,
     width?: number
-  ): void;
+  ): Promise<{}>;
   static showCustom(
     alert: any,
     image: any,
@@ -200,5 +200,5 @@ export declare class TNSFancyAlert {
     duration?: number
   ): void;
   static applyOptions(alert: any): void;
-  static createAlert(width?: number): any;
+  static createAlert(width?: number, onClose?: () => void): any;
 }
