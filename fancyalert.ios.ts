@@ -139,7 +139,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.SUCCESS,
       title || "Success!",
       subTitle,
@@ -156,7 +156,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.ERROR,
       title || "Error!",
       subTitle,
@@ -173,7 +173,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.NOTICE,
       title || "Notice",
       subTitle,
@@ -190,7 +190,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.WARNING,
       title || "Warning!",
       subTitle,
@@ -207,7 +207,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.INFO,
       title || "Info",
       subTitle,
@@ -224,7 +224,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.EDIT,
       title || "Edit",
       subTitle,
@@ -241,7 +241,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.WAITING,
       title || "Waiting...",
       subTitle,
@@ -258,7 +258,7 @@ export class TNSFancyAlert {
     duration?: number,
     width?: number
   ) {
-    TNSFancyAlert.show(
+    return TNSFancyAlert.show(
       TNSFancyAlert.SUPPORTED_TYPES.QUESTION,
       title || "Waiting...",
       subTitle,
@@ -470,12 +470,21 @@ export class TNSFancyAlert {
     TNSFancyAlert.applyOptions(alert);
 
     if (typeof closeBtnTitle === "undefined") closeBtnTitle = "Ok";
+
+    //instantiate promise
+    let buttonPressedPromise = new Promise(resolve => {
+      alert.addButtonActionBlock(closeBtnTitle, resolve);
+      alert.showCloseButton = false;
+    });
+
     alert[`show${type}SubTitleCloseButtonTitleDuration`](
       title,
       subTitle,
-      closeBtnTitle,
+      null, //use this to prevent default actions
       duration || 0
     );
+
+    return buttonPressedPromise;
   }
 
   public static showCustom(
@@ -556,7 +565,7 @@ export class TNSFancyAlert {
   /**
    * Alert Creator
    **/
-  public static createAlert(width?: number) {
+  public static createAlert(width?: number, onClose = () => {}) {
     if (width) {
       return SCLAlertView.alloc().initWithNewWindowWidth(width);
     } else {
