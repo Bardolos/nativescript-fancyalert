@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var app = require("tns-core-modules/application");
 __export(require("./common"));
 var PromptDialog = cn.refactor.lib.colordialog.PromptDialog;
+var ColorDialog = cn.refactor.lib.colordialog.ColorDialog;
 var SUPPORTED_TYPESI;
 (function (SUPPORTED_TYPESI) {
     SUPPORTED_TYPESI[SUPPORTED_TYPESI["INFO"] = 0] = "INFO";
@@ -23,12 +24,17 @@ var TNSFancyAlert = (function () {
         alert.setTitleText(title || "Success!");
         alert.setContentText(subTitle || "");
         alert.setAnimationEnable(true);
-        alert.setPositiveListener(closeBtnTitle || "Okay", new PromptDialog.OnPositiveListener({
-            onClick: function (dialog) {
-                dialog.dismiss();
-            }
-        }));
+		var buttonPressedPromise = new Promise(function (resolve) {
+			alert.setPositiveListener(closeBtnTitle || "Okay", new PromptDialog.OnPositiveListener({
+				onClick: function (dialog) {
+					resolve();
+					dialog.dismiss();
+				}
+			}));
+        });
+        
         alert.show();
+		return buttonPressedPromise;
     };
     TNSFancyAlert.showError = function (title, subTitle, closeBtnTitle) {
         var alert = new PromptDialog(app.android.currentContext);
@@ -36,11 +42,15 @@ var TNSFancyAlert = (function () {
         alert.setTitleText(title || "Error!");
         alert.setContentText(subTitle || "");
         alert.setAnimationEnable(true);
-        alert.setPositiveListener(closeBtnTitle || "Okay", new PromptDialog.OnPositiveListener({
-            onClick: function (dialog) {
-                dialog.dismiss();
-            }
-        }));
+		
+		var buttonPressedPromise = new Promise(function (resolve) {
+			alert.setPositiveListener(closeBtnTitle || "Okay", new PromptDialog.OnPositiveListener({
+				onClick: function (dialog) {
+					resolve();
+					dialog.dismiss();
+				}
+			}));
+		});
         alert.show();
     };
     TNSFancyAlert.showNotice = function (title, subTitle, closeBtnTitle) {
@@ -80,6 +90,27 @@ var TNSFancyAlert = (function () {
                 dialog.dismiss();
             }
         }));
+        alert.show();
+    };
+
+	TNSFancyAlert.showCustomButtons = function (buttons, image, color, title, subTitle) {
+        var alert = new ColorDialog(app.android.currentContext);
+        //alert.setDialogType(SUPPORTED_TYPESI.INFO);
+        alert.setTitle(title || "Info");
+        alert.setContentText(subTitle || "");
+        //alert.setAnimationEnable(true);
+		alert.setPositiveListener(buttons[0].label || "Okay", new ColorDialog.OnPositiveListener({
+			onClick: function (dialog) {
+				buttons[0].action();
+				dialog.dismiss();
+			}
+		}))
+		alert.setNegativeListener(buttons[1].label || "Okay", new ColorDialog.OnNegativeListener({
+			onClick: function (dialog) {
+				buttons[1].action();
+				dialog.dismiss();
+			}
+		}))
         alert.show();
     };
     return TNSFancyAlert;

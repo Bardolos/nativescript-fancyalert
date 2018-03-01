@@ -1,3 +1,4 @@
+import { TNSFancyAlertButton } from "./common";
 export * from "./common";
 export declare enum SUPPORTED_TYPESI {
   INFO = 0,
@@ -31,5 +32,12 @@ export declare class TNSFancyAlert {
     title: string,
     subTitle?: string,
     closeBtnTitle?: string
+  ): void;
+  static showCustomButtons(
+    buttons: Array<TNSFancyAlertButton>,
+    image: string,
+    color: string,
+    title: string,
+    subTitle: string
   ): void;
 }
